@@ -1,0 +1,31 @@
+version: '3'
+services:
+  web1:
+    image: nginx:alpine
+    container_name: nginx-cluster1
+    ports:
+      - 2201:80
+      - 2200:2200
+    volumes:
+      - ./nginx/www:/var/www
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf/conf.d/:/etc/nginx/conf.d/
+    working_dir: /var/www
+    networks:
+      - overlay
+
+  web2:
+    image: nginx:alpine
+    container_name: nginx-cluster2
+    ports:
+      - 2202:80
+    volumes:
+      - ./nginx2/www:/var/www
+      - ./nginx2/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx2/conf/conf.d/:/etc/nginx/conf.d/
+    working_dir: /var/www
+    networks:
+      - overlay
+
+networks:
+  overlay:
